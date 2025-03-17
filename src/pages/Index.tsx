@@ -23,6 +23,18 @@ const Index: React.FC = () => {
       });
     }, 2000);
     
+    // Fix for gsap error - import dynamically
+    const loadGsap = async () => {
+      try {
+        await import('gsap');
+        console.log('GSAP loaded successfully');
+      } catch (error) {
+        console.error('Failed to load GSAP:', error);
+      }
+    };
+    
+    loadGsap();
+    
     return () => {};
   }, []);
   
