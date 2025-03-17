@@ -15,28 +15,6 @@ const Index: React.FC = () => {
   useAnimateOnScroll();
   
   useEffect(() => {
-    // Initialize skill bars animation
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const skillBars = entry.target.querySelectorAll('[data-width]');
-            skillBars.forEach((bar) => {
-              const width = bar.getAttribute('data-width');
-              if (width) {
-                (bar as HTMLElement).style.width = width;
-              }
-            });
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    
-    document.querySelectorAll('#skills .animate-on-scroll').forEach((el) => {
-      observer.observe(el);
-    });
-    
     // Welcome toast
     setTimeout(() => {
       toast('👋 Welcome to my portfolio', {
@@ -45,7 +23,7 @@ const Index: React.FC = () => {
       });
     }, 2000);
     
-    return () => observer.disconnect();
+    return () => {};
   }, []);
   
   return (

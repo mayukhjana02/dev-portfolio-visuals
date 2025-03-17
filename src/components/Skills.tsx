@@ -1,5 +1,8 @@
 
 import React from 'react';
+import { Badge } from '@/components/ui/badge';
+import { useSkillBricksEffect } from '@/lib/motion';
+import { cn } from '@/lib/utils';
 
 interface SkillCategory {
   name: string;
@@ -44,6 +47,8 @@ const skillsData: SkillCategory[] = [
 ];
 
 const Skills: React.FC = () => {
+  useSkillBricksEffect();
+
   return (
     <section id="skills" className="portfolio-section bg-secondary/50">
       <div className="max-w-7xl mx-auto">
@@ -52,42 +57,44 @@ const Skills: React.FC = () => {
           The technologies, tools, and languages I work with to build exceptional web applications.
         </p>
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          {skillsData.map((category, categoryIndex) => (
-            <div 
-              key={category.name}
-              className="animate-on-scroll bg-white rounded-xl p-6 shadow-sm border border-border"
-              style={{ animationDelay: `${categoryIndex * 200}ms` }}
-            >
-              <h3 className="text-xl font-bold mb-6 text-center text-gradient">{category.name}</h3>
-              
-              <div className="space-y-6">
-                {category.skills.map((skill) => (
-                  <div key={skill.name} className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <img 
-                          src={skill.logo} 
-                          alt={skill.name}
-                          className="w-6 h-6 mr-3" 
-                        />
-                        <span className="font-medium">{skill.name}</span>
-                      </div>
-                      <span className="text-sm text-muted-foreground">{skill.level}%</span>
-                    </div>
-                    
-                    <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-primary rounded-full transition-all duration-1000"
-                        style={{ width: '0%' }}
-                        data-width={`${skill.level}%`}
-                      />
+        <div className="animate-on-scroll mb-16">
+          <div className="skills-container relative bg-white/80 backdrop-blur-sm p-8 rounded-xl border border-border shadow-md h-[400px] overflow-hidden">
+            {skillsData.flatMap((category, categoryIndex) => 
+              category.skills.map((skill, skillIndex) => {
+                const xPosition = Math.floor(Math.random() * 85); // Random X position (0-85%)
+                const yPosition = Math.floor(Math.random() * 85); // Random Y position (0-85%)
+                const delay = (categoryIndex * 5 + skillIndex) * 50; // Staggered delay for appearance
+                
+                return (
+                  <div 
+                    key={`${category.name}-${skill.name}`}
+                    className={cn(
+                      "skill-brick absolute flex items-center p-3 rounded-lg shadow-sm border border-border",
+                      "bg-white/90 backdrop-blur-sm transition-all duration-300 cursor-pointer",
+                      "hover:shadow-md hover:z-10"
+                    )}
+                    style={{
+                      left: `${xPosition}%`,
+                      top: `${yPosition}%`,
+                      transitionDelay: `${delay}ms`,
+                      width: `${Math.max(120, skill.name.length * 12)}px`,
+                    }}
+                  >
+                    <img src={skill.logo} alt={skill.name} className="w-6 h-6 mr-2" />
+                    <div>
+                      <div className="font-medium text-sm">{skill.name}</div>
+                      <Badge 
+                        variant={skill.level >= 85 ? "default" : skill.level >= 70 ? "secondary" : "outline"}
+                        className="mt-1 text-xs"
+                      >
+                        {skill.level}%
+                      </Badge>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          ))}
+                );
+              })
+            )}
+          </div>
         </div>
         
         <div className="mt-20 animate-on-scroll">

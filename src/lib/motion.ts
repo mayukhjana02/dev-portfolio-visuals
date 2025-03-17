@@ -56,3 +56,53 @@ export const useParallax = () => {
     };
   }, []);
 };
+
+export const useSkillBricksEffect = () => {
+  useEffect(() => {
+    const container = document.querySelector('.skills-container');
+    if (!container) return;
+
+    const bricks = document.querySelectorAll('.skill-brick');
+    
+    const handleMouseMove = (e: MouseEvent) => {
+      const containerRect = container.getBoundingClientRect();
+      const mouseX = e.clientX - containerRect.left;
+      const mouseY = e.clientY - containerRect.top;
+      
+      bricks.forEach((brick) => {
+        const brickRect = brick.getBoundingClientRect();
+        const brickCenterX = brickRect.left + brickRect.width / 2 - containerRect.left;
+        const brickCenterY = brickRect.top + brickRect.height / 2 - containerRect.top;
+        
+        const distanceX = mouseX - brickCenterX;
+        const distanceY = mouseY - brickCenterY;
+        const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+        
+        const maxDistance = 300;
+        const intensity = Math.max(0, 1 - distance / maxDistance);
+        
+        const moveX = distanceX * intensity * -0.1;
+        const moveY = distanceY * intensity * -0.1;
+        const scale = 1 + intensity * 0.1;
+        
+        (brick as HTMLElement).style.transform = `translate(${moveX}px, ${moveY}px) scale(${scale})`;
+        (brick as HTMLElement).style.zIndex = intensity > 0.2 ? '10' : '1';
+      });
+    };
+    
+    const handleMouseLeave = () => {
+      bricks.forEach((brick) => {
+        (brick as HTMLElement).style.transform = 'translate(0, 0) scale(1)';
+        (brick as HTMLElement).style.zIndex = '1';
+      });
+    };
+    
+    container.addEventListener('mousemove', handleMouseMove);
+    container.addEventListener('mouseleave', handleMouseLeave);
+    
+    return () => {
+      container.removeEventListener('mousemove', handleMouseMove);
+      container.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, []);
+};
