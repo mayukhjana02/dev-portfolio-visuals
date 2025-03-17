@@ -61,8 +61,8 @@ const Skills: React.FC = () => {
           <div className="skills-container relative bg-white/80 backdrop-blur-sm p-8 rounded-xl border border-border shadow-md h-[400px] overflow-hidden">
             {skillsData.flatMap((category, categoryIndex) => 
               category.skills.map((skill, skillIndex) => {
-                const xPosition = Math.floor(Math.random() * 85); // Random X position (0-85%)
-                const yPosition = Math.floor(Math.random() * 85); // Random Y position (0-85%)
+                // We will not use positioning with percentages anymore
+                // The useSkillBricksEffect function will handle positioning with pixels
                 const delay = (categoryIndex * 5 + skillIndex) * 50; // Staggered delay for appearance
                 
                 return (
@@ -74,8 +74,6 @@ const Skills: React.FC = () => {
                       "hover:shadow-md hover:z-10"
                     )}
                     style={{
-                      left: `${xPosition}%`,
-                      top: `${yPosition}%`,
                       transitionDelay: `${delay}ms`,
                       width: `${Math.max(120, skill.name.length * 12)}px`,
                     }}
