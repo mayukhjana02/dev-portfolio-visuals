@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { useSkillBricksEffect } from '@/lib/motion';
@@ -58,40 +57,27 @@ const Skills: React.FC = () => {
         </p>
         
         <div className="animate-on-scroll mb-16">
-          <div className="skills-container relative bg-white/80 backdrop-blur-sm p-8 rounded-xl border border-border shadow-md h-[400px] overflow-hidden">
-            {skillsData.flatMap((category, categoryIndex) => 
-              category.skills.map((skill, skillIndex) => {
-                // We will not use positioning with percentages anymore
-                // The useSkillBricksEffect function will handle positioning with pixels
-                const delay = (categoryIndex * 5 + skillIndex) * 50; // Staggered delay for appearance
-                
-                return (
-                  <div 
-                    key={`${category.name}-${skill.name}`}
-                    className={cn(
-                      "skill-brick absolute flex items-center p-3 rounded-lg shadow-sm border border-border",
-                      "bg-white/90 backdrop-blur-sm transition-all duration-300 cursor-pointer",
-                      "hover:shadow-md hover:z-10"
-                    )}
-                    style={{
-                      transitionDelay: `${delay}ms`,
-                      width: `${Math.max(120, skill.name.length * 12)}px`,
-                    }}
-                  >
-                    <img src={skill.logo} alt={skill.name} className="w-6 h-6 mr-2" />
-                    <div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {skillsData.map((category, categoryIndex) => (
+              <div key={category.name} className="bg-white/80 backdrop-blur-sm p-6 rounded-xl border border-border shadow-md">
+                <h3 className="text-xl font-bold mb-4">{category.name}</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {category.skills.map((skill, skillIndex) => (
+                    <div 
+                      key={`${category.name}-${skill.name}`}
+                      className={cn(
+                        "skill-brick flex items-center p-3 rounded-lg shadow-sm border border-border",
+                        "bg-white/90 backdrop-blur-sm transition-all duration-300 cursor-pointer",
+                        "hover:shadow-md hover:scale-105"
+                      )}
+                    >
+                      <img src={skill.logo} alt={skill.name} className="w-6 h-6 mr-2" />
                       <div className="font-medium text-sm">{skill.name}</div>
-                      <Badge 
-                        variant={skill.level >= 85 ? "default" : skill.level >= 70 ? "secondary" : "outline"}
-                        className="mt-1 text-xs"
-                      >
-                        {skill.level}%
-                      </Badge>
                     </div>
-                  </div>
-                );
-              })
-            )}
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
         
