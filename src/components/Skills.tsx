@@ -35,13 +35,13 @@ const skillsData: SkillCategory[] = [
     ]
   },
   {
-    name: "Tools & Others",
+    name: "DevOps",
     skills: [
       { name: "Git", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg", level: 90 },
       { name: "Docker", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg", level: 70 },
       { name: "AWS", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg", level: 65 },
-      { name: "Figma", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg", level: 80 },
-      { name: "Jest", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg", level: 75 },
+      { name: "CI/CD", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg", level: 75 },
+      { name: "Linux", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg", level: 80 },
     ]
   }
 ];
@@ -57,44 +57,25 @@ const Skills: React.FC = () => {
           The technologies, tools, and languages I work with to build exceptional web applications.
         </p>
         
-        <div className="animate-on-scroll mb-16">
-          <div className="skills-container relative bg-white/80 backdrop-blur-sm p-8 rounded-xl border border-border shadow-md h-[400px] overflow-hidden">
-            {skillsData.flatMap((category, categoryIndex) => 
-              category.skills.map((skill, skillIndex) => {
-                const xPosition = Math.floor(Math.random() * 85); // Random X position (0-85%)
-                const yPosition = Math.floor(Math.random() * 85); // Random Y position (0-85%)
-                const delay = (categoryIndex * 5 + skillIndex) * 50; // Staggered delay for appearance
-                
-                return (
-                  <div 
-                    key={`${category.name}-${skill.name}`}
-                    className={cn(
-                      "skill-brick absolute flex items-center p-3 rounded-lg shadow-sm border border-border",
-                      "bg-white/90 backdrop-blur-sm transition-all duration-300 cursor-pointer",
-                      "hover:shadow-md hover:z-10"
-                    )}
-                    style={{
-                      left: `${xPosition}%`,
-                      top: `${yPosition}%`,
-                      transitionDelay: `${delay}ms`,
-                      width: `${Math.max(120, skill.name.length * 12)}px`,
-                    }}
-                  >
-                    <img src={skill.logo} alt={skill.name} className="w-6 h-6 mr-2" />
-                    <div>
-                      <div className="font-medium text-sm">{skill.name}</div>
-                      <Badge 
-                        variant={skill.level >= 85 ? "default" : skill.level >= 70 ? "secondary" : "outline"}
-                        className="mt-1 text-xs"
-                      >
-                        {skill.level}%
-                      </Badge>
+        <div className="grid md:grid-cols-3 gap-6 mb-16">
+          {skillsData.map((category) => (
+            <div key={category.name} className="animate-on-scroll">
+              <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl border border-border shadow-md h-full">
+                <h3 className="text-xl font-bold mb-4 text-primary">{category.name}</h3>
+                <div className="space-y-3">
+                  {category.skills.map((skill) => (
+                    <div 
+                      key={skill.name}
+                      className="flex items-center p-3 rounded-lg bg-secondary/20 border border-border transition-all duration-300 hover:shadow-md"
+                    >
+                      <img src={skill.logo} alt={skill.name} className="w-6 h-6 mr-3" />
+                      <span className="font-medium">{skill.name}</span>
                     </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
         
         <div className="mt-20 animate-on-scroll">
