@@ -6,7 +6,6 @@ import { ChevronDown } from 'lucide-react';
 
 const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  
   useParallax();
   
   useEffect(() => {
@@ -60,9 +59,33 @@ const Hero: React.FC = () => {
         
         <div className="w-full md:w-1/2 mt-12 md:mt-0 hidden md:block relative">
           <div 
-            className="relative w-full h-[400px] opacity-0 animate-fade-in rounded-lg overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5"
+            className="relative w-[500px] h-[500px] opacity-0 animate-fade-in" 
             style={{ animationDelay: '1s', animationFillMode: 'forwards' }}
-          />
+            data-parallax="0.05"
+          >
+            <div className="absolute inset-0 w-72 h-72 bg-primary/5 rounded-full animate-spin-slow"></div>
+            <div className="absolute inset-0 top-10 -left-10 w-72 h-72 bg-primary/5 rounded-full animate-spin-slow" style={{ animationDirection: 'reverse' }}></div>
+            <div className="absolute inset-0 -top-10 left-10 w-72 h-72 bg-primary/5 rounded-full animate-float"></div>
+            
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 glassmorphism p-6 rounded-lg shadow-lg">
+              <pre className="font-mono text-sm">
+                <code>{`function Developer() {
+  const [skills, setSkills] = useState([
+    'React', 'Node.js', 'TypeScript',
+    'Three.js', 'Tailwind CSS'
+  ]);
+
+  return (
+    <div className="passionate-developer">
+      {skills.map(skill => (
+        <Skill key={skill} name={skill} />
+      ))}
+    </div>
+  );
+}`}</code>
+              </pre>
+            </div>
+          </div>
         </div>
       </div>
       

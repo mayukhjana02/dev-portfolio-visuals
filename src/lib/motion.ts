@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useState } from 'react';
 
 export const useAnimateOnScroll = () => {
@@ -63,15 +64,12 @@ export const useSkillBricksEffect = () => {
 
     const bricks = document.querySelectorAll('.skill-brick');
     
+    // Initial positions and velocities for falling effect
     const brickStates = new Map<Element, {
       x: number;
       y: number;
-      baseX: number;
-      baseY: number;
-      floatOffsetX: number;
-      floatOffsetY: number;
-      floatSpeed: number;
-      floatAngle: number;
+      vx: number;
+      vy: number;
       isDragging: boolean;
       offsetX: number;
       offsetY: number;
@@ -81,18 +79,15 @@ export const useSkillBricksEffect = () => {
       const rect = brick.getBoundingClientRect();
       const containerRect = container.getBoundingClientRect();
       
+      // Random initial position within the container
       const x = Math.random() * (containerRect.width - rect.width);
-      const y = Math.random() * (containerRect.height - rect.width);
+      const y = -rect.height * (1 + Math.random() * 3); // Start above the container
       
       brickStates.set(brick, {
         x,
         y,
-        baseX: x,
-        baseY: y,
-        floatOffsetX: 0,
-        floatOffsetY: 0,
-        floatSpeed: 0.5 + Math.random() * 1.5,
-        floatAngle: Math.random() * Math.PI * 2,
+        vx: 0,
+        vy: 0,
         isDragging: false,
         offsetX: 0,
         offsetY: 0
@@ -105,13 +100,10 @@ export const useSkillBricksEffect = () => {
       (brick as HTMLElement).style.zIndex = '1';
     });
     
+    // Animation frame for falling effect
     let animationId: number;
-    let lastTime = 0;
     
-    const animate = (currentTime: number) => {
-      const deltaTime = currentTime - lastTime;
-      lastTime = currentTime;
-      
+    const animate = () => {
       const containerRect = container.getBoundingClientRect();
       
       bricks.forEach((brick) => {
@@ -121,24 +113,41 @@ export const useSkillBricksEffect = () => {
         const rect = brick.getBoundingClientRect();
         
         if (!state.isDragging) {
-          state.floatAngle += state.floatSpeed * 0.01;
+          // Apply gravity
+          state.vy += 0.2;
           
-          state.floatOffsetX = Math.sin(state.floatAngle) * 20;
-          state.floatOffsetY = Math.sin(state.floatAngle * 1.5) * 15;
+          // Apply some horizontal drift
+          state.vx *= 0.99;
           
-          state.x = state.baseX + state.floatOffsetX;
-          state.y = state.baseY + state.floatOffsetY;
+          // Update position
+          state.x += state.vx;
+          state.y += state.vy;
           
-          if (state.x < 0) state.x = 0;
-          if (state.y < 0) state.y = 0;
-          if (state.x > containerRect.width - rect.width) {
-            state.x = containerRect.width - rect.width;
-          }
+          // Bounce off the bottom
           if (state.y > containerRect.height - rect.height) {
             state.y = containerRect.height - rect.height;
+            state.vy *= -0.6; // Bounce with damping
+            
+            // Add some random horizontal movement on bounce
+            state.vx += (Math.random() - 0.5) * 2;
+          }
+          
+          // Bounce off the sides
+          if (state.x < 0) {
+            state.x = 0;
+            state.vx *= -0.6;
+          } else if (state.x > containerRect.width - rect.width) {
+            state.x = containerRect.width - rect.width;
+            state.vx *= -0.6;
+          }
+          
+          // Damping
+          if (Math.abs(state.vy) < 0.5 && Math.abs(state.y - (containerRect.height - rect.height)) < 1) {
+            state.vy = 0;
           }
         }
         
+        // Update position
         (brick as HTMLElement).style.left = `${state.x}px`;
         (brick as HTMLElement).style.top = `${state.y}px`;
       });
@@ -146,8 +155,9 @@ export const useSkillBricksEffect = () => {
       animationId = requestAnimationFrame(animate);
     };
     
-    animationId = requestAnimationFrame(animate);
+    animate();
     
+    // Event handlers for dragging
     const handleMouseDown = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const brick = target.closest('.skill-brick');
@@ -171,16 +181,19 @@ export const useSkillBricksEffect = () => {
           const containerRect = container.getBoundingClientRect();
           const rect = brick.getBoundingClientRect();
           
+          // Calculate new position
           let newX = e.clientX - state.offsetX;
           let newY = e.clientY - state.offsetY;
           
+          // Constrain to container
           newX = Math.max(0, Math.min(newX, containerRect.width - rect.width));
           newY = Math.max(0, Math.min(newY, containerRect.height - rect.height));
           
+          // Update state
           state.x = newX;
           state.y = newY;
-          state.baseX = newX;
-          state.baseY = newY;
+          state.vx = 0;
+          state.vy = 0;
         }
       });
     };
@@ -196,6 +209,12 @@ export const useSkillBricksEffect = () => {
       });
     };
     
+    // Add mouse event listeners
+    container.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    
+    // Touch events for mobile
     const handleTouchStart = (e: TouchEvent) => {
       const target = e.target as HTMLElement;
       const brick = target.closest('.skill-brick');
@@ -212,7 +231,7 @@ export const useSkillBricksEffect = () => {
     };
     
     const handleTouchMove = (e: TouchEvent) => {
-      e.preventDefault();
+      e.preventDefault(); // Prevent scrolling while dragging
       
       bricks.forEach((brick) => {
         const state = brickStates.get(brick);
@@ -220,16 +239,19 @@ export const useSkillBricksEffect = () => {
           const containerRect = container.getBoundingClientRect();
           const rect = brick.getBoundingClientRect();
           
+          // Calculate new position
           let newX = e.touches[0].clientX - state.offsetX;
           let newY = e.touches[0].clientY - state.offsetY;
           
+          // Constrain to container
           newX = Math.max(0, Math.min(newX, containerRect.width - rect.width));
           newY = Math.max(0, Math.min(newY, containerRect.height - rect.height));
           
+          // Update state
           state.x = newX;
           state.y = newY;
-          state.baseX = newX;
-          state.baseY = newY;
+          state.vx = 0;
+          state.vy = 0;
         }
       });
     };
@@ -244,9 +266,6 @@ export const useSkillBricksEffect = () => {
       });
     };
     
-    container.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
     container.addEventListener('touchstart', handleTouchStart);
     container.addEventListener('touchmove', handleTouchMove);
     container.addEventListener('touchend', handleTouchEnd);
