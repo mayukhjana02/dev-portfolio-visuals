@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { cn } from '@/lib/utils';
 
@@ -9,18 +10,48 @@ interface WorkStep {
 
 const workSteps: WorkStep[] = [
   {
-    name: "Discovery",
-    description: "Understanding your needs through in-depth consultation and research to create a solid foundation for your project.",
+    name: "Initial Consultation",
+    description: "In-depth discussion to understand your vision, goals, and requirements for the project.",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg",
   },
   {
-    name: "Design & Planning",
-    description: "Creating detailed wireframes and technical specifications while choosing the right technologies for your solution.",
+    name: "Research & Analysis",
+    description: "Thorough market research and analysis of similar solutions to identify best practices and opportunities.",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg",
+  },
+  {
+    name: "Planning",
+    description: "Creating a detailed project roadmap with milestones, deliverables, and timeline estimates.",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/trello/trello-plain.svg",
+  },
+  {
+    name: "Design",
+    description: "Crafting wireframes and visual designs that align with your brand and user experience goals.",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg",
+  },
+  {
+    name: "Development Setup",
+    description: "Setting up the development environment and choosing the right tech stack for your needs.",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg",
+  },
+  {
+    name: "Core Development",
+    description: "Building the foundation of your application with clean, maintainable code.",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
   },
   {
-    name: "Development",
-    description: "Building your application with clean, maintainable code while following best practices and modern standards.",
+    name: "Testing & QA",
+    description: "Rigorous testing to ensure functionality, performance, and user experience meet high standards.",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg",
+  },
+  {
+    name: "Deployment",
+    description: "Launching your application with proper configuration and security measures in place.",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
+  },
+  {
+    name: "Maintenance & Support",
+    description: "Ongoing support, updates, and improvements to keep your application running smoothly.",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
   }
 ];
@@ -31,7 +62,7 @@ const Skills: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <h2 className="section-heading">How I Work</h2>
         <p className="section-subheading">
-          My systematic approach to turning your ideas into reality.
+          My comprehensive approach to turning your ideas into reality.
         </p>
         
         <div className="grid md:grid-cols-3 gap-6 mb-16">
