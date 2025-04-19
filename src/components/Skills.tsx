@@ -1,78 +1,56 @@
-
 import React from 'react';
-import { Badge } from '@/components/ui/badge';
-import { useSkillBricksEffect } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
-interface SkillCategory {
+interface WorkStep {
   name: string;
-  skills: {
-    name: string;
-    logo: string;
-    level: number;
-  }[];
+  description: string;
+  icon: string;
 }
 
-const skillsData: SkillCategory[] = [
+const workSteps: WorkStep[] = [
   {
-    name: "Frontend",
-    skills: [
-      { name: "React", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg", level: 90 },
-      { name: "TypeScript", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg", level: 85 },
-      { name: "Next.js", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg", level: 80 },
-      { name: "Tailwind CSS", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg", level: 90 },
-      { name: "Three.js", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/threejs/threejs-original.svg", level: 75 },
-    ]
+    name: "Discovery",
+    description: "Understanding your needs through in-depth consultation and research to create a solid foundation for your project.",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg",
   },
   {
-    name: "Backend",
-    skills: [
-      { name: "Node.js", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg", level: 85 },
-      { name: "Express", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg", level: 85 },
-      { name: "MongoDB", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg", level: 80 },
-      { name: "PostgreSQL", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg", level: 75 },
-      { name: "GraphQL", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/graphql/graphql-plain.svg", level: 70 },
-    ]
+    name: "Design & Planning",
+    description: "Creating detailed wireframes and technical specifications while choosing the right technologies for your solution.",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
   },
   {
-    name: "DevOps",
-    skills: [
-      { name: "Git", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg", level: 90 },
-      { name: "Docker", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg", level: 70 },
-      { name: "AWS", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg", level: 65 },
-      { name: "CI/CD", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg", level: 75 },
-      { name: "Linux", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg", level: 80 },
-    ]
+    name: "Development",
+    description: "Building your application with clean, maintainable code while following best practices and modern standards.",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
   }
 ];
 
 const Skills: React.FC = () => {
-  useSkillBricksEffect();
-
   return (
     <section id="skills" className="portfolio-section bg-secondary/50">
       <div className="max-w-7xl mx-auto">
-        <h2 className="section-heading">Technical Skills</h2>
+        <h2 className="section-heading">How I Work</h2>
         <p className="section-subheading">
-          The technologies, tools, and languages I work with to build exceptional web applications.
+          My systematic approach to turning your ideas into reality.
         </p>
         
         <div className="grid md:grid-cols-3 gap-6 mb-16">
-          {skillsData.map((category) => (
-            <div key={category.name} className="animate-on-scroll">
-              <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl border border-border shadow-md h-full">
-                <h3 className="text-xl font-bold mb-4 text-primary">{category.name}</h3>
-                <div className="space-y-3">
-                  {category.skills.map((skill) => (
-                    <div 
-                      key={skill.name}
-                      className="flex items-center p-3 rounded-lg bg-secondary/20 border border-border transition-all duration-300 hover:shadow-md"
-                    >
-                      <img src={skill.logo} alt={skill.name} className="w-6 h-6 mr-3" />
-                      <span className="font-medium">{skill.name}</span>
-                    </div>
-                  ))}
+          {workSteps.map((step, index) => (
+            <div key={step.name} className="animate-on-scroll">
+              <div className={cn(
+                "bg-white/80 backdrop-blur-sm p-6 rounded-xl border border-border shadow-md h-full",
+                "transform transition-all duration-500 hover:scale-105"
+              )}>
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                    <img src={step.icon} alt={step.name} className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <span className="text-sm text-primary/60 font-medium">Step {index + 1}</span>
+                    <h3 className="text-xl font-bold text-primary">{step.name}</h3>
+                  </div>
                 </div>
+                <p className="text-muted-foreground">{step.description}</p>
               </div>
             </div>
           ))}
