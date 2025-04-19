@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import { useParallax } from '@/lib/motion';
+import { useParallax } from '@/hooks/useParallax';
 import { ChevronDown } from 'lucide-react';
 
 const Hero: React.FC = () => {

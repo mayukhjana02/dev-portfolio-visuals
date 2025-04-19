@@ -8,7 +8,7 @@ import About from '@/components/About';
 import Skills from '@/components/Skills';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
-import { useAnimateOnScroll } from '@/lib/motion';
+import { useAnimateOnScroll } from '@/hooks/useAnimateOnScroll';
 import { toast } from 'sonner';
 
 const Index: React.FC = () => {
