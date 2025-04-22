@@ -4,6 +4,8 @@ import { cn } from '@/lib/utils';
 import { useParallax } from '@/hooks/useParallax';
 import { ChevronDown } from 'lucide-react';
 
+const videoSrc = "/placeholder.mp4"; // Change this to your video path
+
 const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   useParallax();
@@ -21,9 +23,18 @@ const Hero: React.FC = () => {
       id="home" 
       className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden"
     >
+      {/* Video background */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover object-center z-0"
+        src={videoSrc}
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
       <div 
         ref={containerRef}
-        className="max-w-7xl mx-auto px-6 py-16 md:py-24 w-full flex flex-col md:flex-row items-center justify-between"
+        className="relative z-10 max-w-7xl mx-auto px-6 py-16 md:py-24 w-full flex flex-col md:flex-row items-center justify-between"
       >
         <div className="w-full md:w-1/2 md:pr-8 z-10">
           <div className="space-y-6">
@@ -91,7 +102,7 @@ const Hero: React.FC = () => {
       
       <a 
         href="#projects" 
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-sm text-muted-foreground animate-bounce"
+        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-sm text-muted-foreground animate-bounce z-20"
       >
         <span className="mb-2">Scroll</span>
         <ChevronDown size={20} />
